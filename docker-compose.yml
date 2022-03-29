@@ -40,17 +40,6 @@ services:
       - TOMCAT_USERNAME=admin
       - TOMCAT_PASSWORD=admin
       - TOMCAT_EXTRA_JAVA_OPTS=-Djava.security.auth.login.config=/opt/bitnami/tomcat/conf/jaas.config -Dlog4j.configuration=/opt/bitnami/tomcat/lib/log4j.properties
-  openldap:
-    image: bitnami/openldap:2
-    volumes:
-      - './ldapconf:/opt/ldapconf'
-    ports:
-      - '1389:1389'
-      - '1636:1636'
-    environment:
-      - LDAP_ADMIN_USERNAME=admin
-      - LDAP_ADMIN_PASSWORD=adminpassword
-      - LDAP_CUSTOM_LDIF_DIR=/opt/ldapconf/nbia.ldif
 volumes:
   mariadb_data:
     driver: local
