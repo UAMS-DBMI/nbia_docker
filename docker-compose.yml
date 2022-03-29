@@ -25,21 +25,11 @@ services:
     image: jrutecht/bitnami-tomcat9-jdk18:latest
     volumes:
       - './webapps/nbia-api.war:/opt/bitnami/tomcat/webapps_default/nbia-api.war'
-      - './webapps/nbia-download.war:/opt/bitnami/tomcat/webapps_default/nbia-download.war'
-      - './webapps/ncia.war:/opt/bitnami/tomcat/webapps_default/ncia.war'
-      - './webapps/nbia-admin/:/opt/bitnami/tomcat/webapps_default/nbia-admin/'
-      - './webapps/nbia-search/:/opt/bitnami/tomcat/webapps_default/nbia-search/'
-      - './webapps/nbia-search-cover/:/opt/bitnami/tomcat/webapps_default/nbia-search-cover/'
-      - './webapps/nbia-uat/:/opt/bitnami/tomcat/webapps_default/nbia-uat/'
-      - './webapps/nbia-viewer/:/opt/bitnami/tomcat/webapps_default/nbia-viewer/'
       - './tomcatfiles/conf/context.xml:/opt/bitnami/tomcat/conf/context.xml'
       - './tomcatfiles/conf/server.xml:/opt/bitnami/tomcat/conf/server.xml'
       - './tomcatfiles/conf/jaas.config:/opt/bitnami/tomcat/conf/jaas.config'
-      - './tomcatfiles/lib/log4j.properties:/opt/bitnami/tomcat/lib/log4j.properties'
       - './tomcatfiles/lib/mysql-connector-java-5.1.34.jar:/opt/bitnami/tomcat/lib/mysql-connector-java-5.1.34.jar'
       - './tomcatfiles/lib/nbia.properties:/opt/bitnami/tomcat/lib/nbia.properties'
-      - './tomcatfiles/lib/UIDNames.properties:/opt/bitnami/tomcat/lib/UIDNames.properties'
-      - './tomcatfiles/lib/userAgreement.txt:/opt/bitnami/tomcat/lib/userAgreement.txt'
       - './dicoms:/opt/dicoms'
     ports:
       - '24080:24080'
@@ -60,19 +50,7 @@ services:
     environment:
       - LDAP_ADMIN_USERNAME=admin
       - LDAP_ADMIN_PASSWORD=adminpassword
-      # - LDAP_USERS=user01,user02,nbiaAdmin
-      # - LDAP_PASSWORDS=password1,password2,admin
       - LDAP_CUSTOM_LDIF_DIR=/opt/ldapconf/nbia.ldif
-  solr:
-    image: docker.io/bitnami/solr:8
-    environment:
-      - SOLR_ENABLE_AUTHENTICATION=no
-      - SOLR_CORE_CONF_DIR=/opt/solr_conf
-      - SOLR_CORES=nbia
-    volumes:
-      - './solr_cores:/opt/solr_conf'
-    ports:
-      - '8983:8983'
 volumes:
   mariadb_data:
     driver: local
