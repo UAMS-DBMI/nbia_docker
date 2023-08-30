@@ -5,8 +5,8 @@
 * Use NBIA Downloader to download the test data into `./dicoms`
 * `docker compose up`
 * Once environment is live import dicom files using `python insert_dicoms.py dicoms/metadata.csv yourusername`
-* Log into nbia-uat, assign collections to either protection group
-* Log into nbia-admin, set all collections to public
+* Log into [nbia-uat](http://localhost/nbia-uat), assign collections to either protection group
+* Log into [nbia-admin](http://localhost/nbia-admin), set all collections to public
 
 # Logs
 Logs can be viewed with `docker compose logs nbia-api -f`
