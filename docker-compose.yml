@@ -32,9 +32,14 @@ services:
       - ./lib/UIDNames.properties:/usr/local/tomcat/lib/UIDNames.properties
       - ./lib/userAgreement.txt:/usr/local/tomcat/lib/userAgreement.txt
       - ./lib:/usr/local/tomcat/lib/custom
-      - /database/dicoms:/opt/dicoms
+      - ./dicoms:/opt/dicoms
     environment:
       - CATALINA_OPTS=-Djava.security.auth.login.config=/usr/local/tomcat/conf/jaas.config -Dlog4j.configuration=/usr/local/tomcat/lib/log4j.properties
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/nbia-api/up"]
+      interval: 1m
+      timeout: 5s
+      retries: 3
   solr:
     image: docker.io/bitnami/solr:8
     environment:
@@ -50,6 +55,8 @@ services:
       - ./nbia.conf:/etc/nginx/nginx.conf
     ports:
       - 80:80
+    healthcheck:
+      test: ["CMD", "service", "nginx", "status"]
 volumes:
   mariadb_data:
     driver: local

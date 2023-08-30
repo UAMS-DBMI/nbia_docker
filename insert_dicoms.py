@@ -161,6 +161,7 @@ def main():
         sys.exit(1)
     csv_file_path = sys.argv[1]
     csv_directory = os.path.dirname(csv_file_path)
+    intermediate_dir = os.path.basename(os.path.normpath(csv_directory))
     USER = sys.argv[2]
     PASS = getpass("{}'s password: ".format(USER))
 
@@ -183,7 +184,9 @@ def main():
                 os.listdir(file_dir), position=1, desc="Series Progress", leave=False
             ):
                 if os.path.isfile(os.path.join(file_dir, dicom)):
-                    dicom_path = os.path.join(relative_file_path, dicom)
+                    dicom_path = os.path.join(
+                        intermediate_dir, relative_file_path, dicom
+                    )
                     send_one(dicom_path, collection, site)
 
 
