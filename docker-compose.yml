@@ -19,6 +19,9 @@ services:
       interval: 15s
       timeout: 5s
       retries: 6
+    logging:
+      options:
+        max-size: 5m
   tomcat:
     image: tomcat:9-jdk8
     volumes:
@@ -40,6 +43,9 @@ services:
       interval: 1m
       timeout: 5s
       retries: 3
+    logging:
+      options:
+        max-size: 5m
   solr:
     image: docker.io/bitnami/solr:8
     environment:
@@ -48,6 +54,9 @@ services:
       - SOLR_CORES=nbia
     volumes:
       - ./solr:/opt/solr_conf
+    logging:
+      options:
+        max-size: 5m
   web:
     image: docker.io/nginx:latest
     volumes:
@@ -57,6 +66,9 @@ services:
       - 80:80
     healthcheck:
       test: ["CMD", "service", "nginx", "status"]
+    logging:
+      options:
+        max-size: 5m
 volumes:
   mariadb_data:
     driver: local
