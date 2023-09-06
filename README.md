@@ -9,7 +9,7 @@
 * Log into [nbia-admin](http://localhost/nbia-admin), set all collections to public
 
 # Logs
-Logs can be viewed with `docker compose logs nbia-api -f`
+Logs can be viewed with `docker compose logs tomcat -f`
 
 # Deploying new builds
 The javascript apps can be replaced without any additional steps, however new war files need the tomcat container to restart.
