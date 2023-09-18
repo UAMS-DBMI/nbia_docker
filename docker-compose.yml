@@ -14,6 +14,8 @@ services:
       - MARIADB_USER=nbia_user
       - MARIADB_PASSWORD=nbia_password
       - MARIADB_DATABASE=nbiadb
+    ports:
+      - 3306:3306
     healthcheck:
       test: ['CMD', '/opt/bitnami/scripts/mariadb/healthcheck.sh']
       interval: 15s
