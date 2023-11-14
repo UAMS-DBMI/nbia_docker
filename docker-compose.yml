@@ -14,6 +14,8 @@ services:
       - MARIADB_USER=nbia_user
       - MARIADB_PASSWORD=nbia_password
       - MARIADB_DATABASE=nbiadb
+    ports:
+      - 3306:3306
     healthcheck:
       test: ['CMD', '/opt/bitnami/scripts/mariadb/healthcheck.sh']
       interval: 15s
@@ -43,6 +45,8 @@ services:
       interval: 1m
       timeout: 5s
       retries: 3
+    ports:
+      - 8888:8080
     logging:
       options:
         max-size: 5m
@@ -69,6 +73,39 @@ services:
     logging:
       options:
         max-size: 5m
+  keycloak:
+    image: bitnami/keycloak:22-debian-11
+    volumes:
+      - ./keycloak:/opt/bitnami/keycloak/data/import
+    environment:
+      KEYCLOAK_EXTRA_ARGS: "-Dkeycloak.migration.action=import 
+                            -Dkeycloak.migration.provider=singleFile 
+                            -Dkeycloak.migration.file=/opt/bitnami/keycloak/data/import/TCIA-realm.json
+                            -Dkeycloak.migration.strategy=OVERWRITE_EXISTING 
+                            -Dkeycloak.migration.usersExportStrategy=SAME_FILE
+                            -Dkeycloak.profile.feature.upload_scripts=enabled
+                            --http-relative-path=/auth"
+      KEYCLOAK_CREATE_ADMIN_USER: true
+      KEYCLOAK_DATABASE_VENDOR: dev-file
+      KEYCLOAK_ADMIN_USER: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_HTTP_RELAITVE_PATH: /auth
+      # KEYCLOAK_IMPORT: /opt/jboss/keycloak/imports/realm-export.json
+    ports:
+      - 8080:8080
+  openldap:
+    image: bitnami/openldap:2
+    volumes:
+      - './ldap:/opt/ldapconf'
+    ports:
+      - '1389:1389'
+      - '1636:1636'
+    environment:
+      - LDAP_ADMIN_USERNAME=admin
+      - LDAP_ADMIN_PASSWORD=adminpassword
+      # - LDAP_USERS=user01,user02,nbiaAdmin
+      # - LDAP_PASSWORDS=password1,password2,admin
+      - LDAP_CUSTOM_LDIF_DIR=/opt/ldapconf/nbia.ldif
 volumes:
   mariadb_data:
     driver: local
